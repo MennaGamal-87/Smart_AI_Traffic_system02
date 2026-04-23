@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>3D City — AI Traffic Control</title>
+  <meta name="description"
+    content="3D city simulation with AI traffic control: Hill Climbing, Genetic Algorithm, CSP and Simulated Annealing vs fixed timers." />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- 3D Canvas -->
+  <div id="canvas-container"></div>
+
+  <!-- ── LEFT HUD ──────────────────────────────────────────── -->
+  <div id="hud">
+    <div id="hud-title">🏙️ City Simulation</div>
+
+    <div class="stat-row"><span>🚗 Cars</span><span id="stat-cars">0</span></div>
+    <div class="stat-row"><span>🔴 Waiting</span><span id="stat-waiting">0</span></div>
+    <div class="stat-row"><span>⏱ Time</span><span id="stat-time">00:00</span></div>
+
+    <!-- Waiting ratio bar -->
+    <div id="heatmap" title="Waiting ratio"></div>
+
+    <hr />
+
+    <div class="control-row">
+      <label for="speed-slider">Speed</label>
+      <input type="range" id="speed-slider" min="0.25" max="3" step="0.05" value="1" />
+      <span id="speed-label">1.0×</span>
+    </div>
+
+    <div class="btn-row">
+      <button id="btn-add-cars">+ Cars</button>
+      <button id="btn-day-night">🌙 Night</button>
+    </div>
+    <div class="btn-row">
+      <button id="btn-reset">⟳ Reset</button>
+    </div>
+  </div>
+
+  <!-- ── RIGHT AI PANEL ─────────────────────────────────────── -->
+  <div id="ai-panel">
+
+    <!-- Header -->
+    <div class="panel-title">🤖 AI Traffic Control</div>
+
+    <!-- Algorithm tabs -->
+    <div id="mode-buttons"></div>
+
+    <!-- Current algorithm info -->
+    <div id="algo-card">
+      <div id="algo-label" class="algo-name">Fixed Timer</div>
+      <p id="algo-desc" class="algo-desc"></p>
+      <div class="algo-step" id="algo-step-info">—</div>
+    </div>
+
+    <!-- Current mode live stats -->
+    <div class="section-title">📊 Current Mode</div>
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-val" id="live-avg">—</div>
+        <div class="stat-lbl">Avg Wait</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="live-max">—</div>
+        <div class="stat-lbl">Max Wait</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="live-tput">—</div>
+        <div class="stat-lbl">Throughput</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="live-count">—</div>
+        <div class="stat-lbl">Samples</div>
+      </div>
+    </div>
+
+    <!-- Current timings -->
+    <div class="section-title">🚦 Avg Green Times</div>
+    <div class="stats-grid">
+      <div class="stat-cell">
+        <div class="stat-val" id="timing-ns">—</div>
+        <div class="stat-lbl">NS Green</div>
+      </div>
+      <div class="stat-cell">
+        <div class="stat-val" id="timing-ew">—</div>
+        <div class="stat-lbl">EW Green</div>
+      </div>
+    </div>
+
+    <!-- Comparison chart -->
+    <div class="section-title">📈 Comparison (Avg Wait)</div>
+    <canvas id="chart-canvas" width="260" height="120"></canvas>
+
+    <!-- Auto-compare -->
+    <div class="btn-row" style="margin-top:8px">
+      <button id="btn-auto-compare">▶ Auto Compare</button>
+      <span id="auto-countdown" class="countdown"></span>
+    </div>
+
+  </div>
+
+  <!-- ── Legend ─────────────────────────────────────────────── -->
+  <div id="legend">
+    <div class="legend-item">
+      <div class="dot red"></div>Red — Stop
+    </div>
+    <div class="legend-item">
+      <div class="dot yellow"></div>Yellow — Slow
+    </div>
+    <div class="legend-item">
+      <div class="dot green"></div>Green — Go
+    </div>
+  </div>
+
+  <!-- ── Controls hint ──────────────────────────────────────── -->
+  <div id="hint">Left-drag: Orbit &nbsp;|&nbsp; Right-drag: Pan<br>Scroll: Zoom</div>
+
+  <!-- ── Three.js r128 (legacy build with examples/js/) ──────── -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- ── App scripts ──────────────────────────────────────────── -->
+  <script src="js/config.js"></script>
+  <script src="js/stats.js"></script>
+  <script src="js/city.js"></script>
+  <script src="js/traffic.js"></script>
+  <script src="js/vehicles.js"></script>
+  <script src="js/ai_control.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>

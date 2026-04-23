@@ -1,0 +1,49 @@
+# 3D City Simulation — Walkthrough
+
+## What Was Built
+
+A fully interactive **3D city simulation** using Three.js, running entirely in the browser with no backend needed.
+
+![3D City Simulation — Live Screenshot](C:\Users\Menna Gamal\.gemini\antigravity\brain\1da9e737-b5cf-4143-8572-bc536fad9d0f\final_city_simulation_1772757344872.png)
+
+## Project Structure
+
+```
+d:\University\3rd year\AI1\3d\
+├── index.html          ← Entry point + HUD layout
+├── style.css           ← Glassmorphism UI, Inter font
+└── js/
+    ├── config.js       ← Global constants (grid, road widths, speeds)
+    ├── city.js         ← Procedural city: roads, buildings, markings
+    ├── traffic.js      ← Traffic lights with phase cycling
+    ├── vehicles.js     ← Car AI: lanes, follow-distance, signal obedience
+    ├── ui.js           ← HUD stats and button wiring
+    └── main.js         ← Scene bootstrap, renderer, animation loop
+```
+
+## Features
+
+| Feature | Details |
+|---|---|
+| 🏙️ City Grid | 5×5 intersections, 4×4 building blocks |
+| 🏢 Buildings | Procedural heights (8–50 m), 6 colour families, lit windows |
+| 🛣️ Roads | Asphalt surface, white/yellow lane dashes, stop lines, crosswalk stripes |
+| 🚦 Traffic Lights | 4 per intersection, NS/EW phase cycling (18s green → 3s yellow → red) |
+| 🚗 Cars | 30 default, 15 colours, lane-aware, stop at red, follow-distance AI |
+| 🎮 Controls | Orbit / pan / zoom camera, speed slider (0.25×–3×), add cars, reset |
+| 🌙 Day/Night | Sky, fog, and car headlight emissive switch on toggle |
+
+## How to Open
+
+> Just open [index.html](file:///d:/University/3rd%20year/AI1/3d/index.html) in Chrome/Edge (double-click the file, or serve via any local HTTP server).
+
+The simulation runs fully offline after Three.js loads from CDN once.
+
+## What Was Tested
+
+- ✅ **3D scene renders** — buildings, roads, cars, and traffic lights all visible
+- ✅ **Cars move** — drive in their lane, stop at red, proceed on green
+- ✅ **+ Add Cars** — car count increased from 30 → 35
+- ✅ **Orbit controls** — camera drag worked smoothly
+- ✅ **No console errors** — clean JS execution
+- ✅ **HUD** — stats update in real time (car count, elapsed time)

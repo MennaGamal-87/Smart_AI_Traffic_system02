@@ -1,0 +1,64 @@
+# 3D City Simulation with Three.js
+
+A fully interactive 3D city simulation in the browser using Three.js. Features a grid-based city with procedural buildings, animated traffic lights, and AI-driven cars that obey traffic signals.
+
+## Proposed Changes
+
+### Project Structure
+
+#### [NEW] index.html
+Main entry point — loads Three.js from CDN, links CSS and JS files, contains the canvas mount and HUD overlay HTML.
+
+#### [NEW] style.css
+Glassmorphism-styled HUD panel, controls, stats display. Dark background, neon accent colors for a premium modern look.
+
+#### [NEW] js/main.js
+Scene bootstrap: renderer, camera, lighting (ambient + directional with shadows), fog, orbit controls. Animation loop.
+
+#### [NEW] js/city.js
+Procedural city generator:
+- 6×6 grid of city blocks separated by roads
+- Each block filled with 2–5 buildings (random height 10–60m, random muted colors)
+- Ground plane with road texture pattern drawn via canvas
+- Road markings (dashed center lines, crosswalks at intersections)
+- Sidewalks along all roads
+
+#### [NEW] js/traffic.js
+Traffic light system:
+- `TrafficLight` class: 3D pole + 3 light heads (red/yellow/green)
+- State machine cycling: Green (N/S) → Yellow → Red → Green (E/W) → ...
+- 4 traffic lights per intersection
+- Exposes `getStateForDirection(dir)` → `"red" | "green" | "yellow"`
+
+#### [NEW] js/vehicles.js
+Vehicle system:
+- `Car` class: detailed box-geometry car (body, roof, wheels, headlights, windows)
+- Waypoint graph built from road grid — nodes at block centers and intersections
+- `VehicleManager`: spawns cars at random entry points, assigns random routes
+- Movement: cars accelerate/decelerate, check traffic light state before crossing intersections
+- Lane-aware positioning (drive on right side of road)
+- Cars slow down and stop behind other cars (simple following behavior)
+
+#### [NEW] js/ui.js
+HUD overlay logic:
+- Live stats: car count, simulation time
+- Slider: simulation speed (0.5× – 3×)
+- Button: "Add Cars" (+5 cars)
+- Button: "Day / Night" toggle (changes sky, adds emissive headlights at night)
+- Minimap (optional 2D canvas top-down view)
+
+---
+
+## Verification Plan
+
+### Manual Verification (Browser)
+1. Open `index.html` directly in Chrome/Edge (double-click or drag to browser)
+2. Verify the 3D scene loads with a city grid visible
+3. Use mouse to orbit (left-drag), pan (right-drag), zoom (scroll)
+4. Confirm buildings of varied heights appear in city blocks
+5. Confirm traffic lights cycle Red → Green → Yellow correctly at intersections
+6. Confirm cars appear on roads and move
+7. Confirm cars stop at red lights and proceed on green
+8. Test "Add Cars" button — car count should increase
+9. Test speed slider — animation should speed up/slow down
+10. Test Day/Night toggle — sky should darken and headlights glow
